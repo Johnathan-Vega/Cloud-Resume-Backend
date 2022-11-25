@@ -2,7 +2,7 @@ resource "aws_apigatewayv2_api" "apigateway" {
   name          = "visitorcountapi"
   protocol_type = "HTTP"
   cors_configuration {
-    allow_origins = ["*"]
+    allow_origins = [var.domain , var.subdomain]
     allow_headers = ["*"]
   }
 }
@@ -28,8 +28,8 @@ resource "aws_apigatewayv2_stage" "api_stage" {
     )
   }
   default_route_settings {
-    throttling_burst_limit = 2
-    throttling_rate_limit = 2
+    throttling_burst_limit = 1
+    throttling_rate_limit = 1
   }
 }
 
