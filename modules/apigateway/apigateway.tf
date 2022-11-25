@@ -2,7 +2,7 @@ resource "aws_apigatewayv2_api" "apigateway" {
   name          = "visitorcountapi"
   protocol_type = "HTTP"
   cors_configuration {
-    allow_origins = [var.domain]
+    allow_origins = ["https://johnathanvega.com"]
     allow_headers = ["*"]
   }
 }
