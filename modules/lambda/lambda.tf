@@ -12,7 +12,6 @@ resource "aws_s3_object" "lambda_upload" {
 }
 
 resource "aws_lambda_function" "visitorFunction" {
-  filename      = "${path.module}/counter.zip"
   s3_bucket = "visitcountlambdas3"
   s3_key = aws_s3_object.lambda_upload.key
   function_name = "visitorFunction"
