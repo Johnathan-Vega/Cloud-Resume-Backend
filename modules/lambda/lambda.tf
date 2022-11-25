@@ -4,6 +4,24 @@ data "archive_file" "init" {
   output_path = "${path.module}/counter.zip"
 }
 
+resource "aws_s3_object" "lambda_upload" {
+  bucket = "visitcountlambdas3"
+  key    = "counter.zip"
+  source =  data.archive_file.init.output_path
+  etag = filemd5(data.archive_file.init.output_path)
+}
+
+resource "aws_lambda_function" "visitorFunction" {
+  filename      = "${path.module}/counter.zip"
+  s3_bucket = "visitcountlambdas3"
+  s3_key = aws_s3_object.lambda_upload.key
+  function_name = "visitorFunction"
+  role          = aws_iam_role.lambda_dynamodb_exec.arn
+  handler       = "counter.lambda_handler"
+  runtime = "python3.9"
+  source_code_hash = filebase64sha256(data.archive_file.init.output_path)
+}
+
 resource "aws_iam_role" "lambda_dynamodb_exec" {
   name = "lambda_dynamodb_exec"
 
@@ -54,14 +72,6 @@ resource "aws_iam_role_policy" "lambda_policy" {
         }
     ]
   })
-}
-
-resource "aws_lambda_function" "visitorFunction" {
-  filename      = "${path.module}/counter.zip"
-  function_name = "visitorFunction"
-  role          = aws_iam_role.lambda_dynamodb_exec.arn
-  handler       = "counter.lambda_handler"
-  runtime = "python3.9"
 }
 
 resource "aws_cloudwatch_log_group" "lambda_cloudwatch" {
