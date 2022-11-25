@@ -31,7 +31,7 @@ def lambda_handler(event, context):
             "statusCode": 200,
             'headers': {
             'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Origin': 'https://johnathanvega.com',
             'Access-Control-Allow-Methods': '*'
         },
             "body": json.dumps({"CountAmount": CountAmount})
