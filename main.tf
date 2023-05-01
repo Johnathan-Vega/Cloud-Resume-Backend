@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = "resumetfstate"
-    key = "terraform.tfstate"
+    bucket = "tfstateresume"
+    key = "terraformresume.tfstate"
     region = "us-east-1"
   }
   required_providers {
