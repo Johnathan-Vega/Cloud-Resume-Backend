@@ -5,14 +5,14 @@ data "archive_file" "init" {
 }
 
 resource "aws_s3_object" "lambda_upload" {
-  bucket = "visitcountlambdas3"
+  bucket = "visitcounterlambda"
   key    = "counter.zip"
   source =  data.archive_file.init.output_path
   etag = filemd5(data.archive_file.init.output_path)
 }
 
 resource "aws_lambda_function" "visitorFunction" {
-  s3_bucket = "visitcountlambdas3"
+  s3_bucket = "visitcounterlambda"
   s3_key = aws_s3_object.lambda_upload.key
   function_name = "visitorFunction"
   role          = aws_iam_role.lambda_dynamodb_exec.arn
