@@ -35,7 +35,7 @@ jobs:
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
-    - name: Terraform Apply
-      id: apply
+    - name: Terraform Destroy
+      id: destroy
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -no-color -auto-approve -input=false
+      run: terraform destroy -no-color -auto-approve -input=false
